@@ -1,0 +1,49 @@
+{
+  "sections": {
+    "main-slider": {
+      "type": "main-slider",
+      "settings": {
+        "autoplay": true,
+        "autoplay_speed": 3,
+        "infinite": true
+      },
+      "blocks": {
+        "image": {
+          "type": "image",
+          "settings": {
+            "title": "Modern solutions for current and future mobility needs."
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "title": "Advanced Technology for Optimal Performance"
+          }
+        }
+      },
+      "block_order": [
+        "image",
+        "heading"
+      ]
+    },
+    "blogs": {
+      "type": "blogs",
+      "settings": {
+        "limit": 3,
+        "padding": 80
+      }
+    },
+    "products": {
+      "type": "products",
+      "settings": {
+        "limit": 3,
+        "collection": "all"
+      }
+    }
+  },
+  "order": [
+    "main-slider",
+    "blogs",
+    "products"
+  ]
+}

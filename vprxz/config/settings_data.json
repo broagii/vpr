@@ -1,0 +1,13 @@
+{
+  "current": "vpr",
+  "presets": {
+    "vpr": {
+      "primary_color": "#FDDB3B",
+      "background_color": "#fff",
+      "font_family": "work_sans_n6",
+      "font_size": 16,
+      "color": "#23262f",
+      "line_height": 1.7
+    }
+  }
+}

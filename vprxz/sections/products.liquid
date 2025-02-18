@@ -1,0 +1,116 @@
+{% style %}
+  .products {
+    padding: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .products .products-title {
+    font-size: 60px;
+    text-transform: uppercase;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .products .products-item .products-item-price {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  .products .products-item {
+    border-radius: 20px;
+    box-shadow: 0 32px 32px rgba(31, 47, 70, 0.12);
+    flex-basis: calc(33.333% - 32px);
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin: 32px 16px 0;
+    max-width: calc(33.333% - 32px);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+  }
+  .products .products-item .img {
+    border-radius: 16px;
+    height: auto;
+    padding-top: 72%;
+    width: 100%;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+  .products .products-item .products-item-content {
+    color: #23262f;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 20px 0;
+  }
+  @media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .products .products-item {
+      max-width: calc(50% - 32px);
+    }
+  }
+  @media only screen and (max-width: 767px) {
+    .products .products-item {
+      max-width: 100%;
+    }
+    .products .products-item .img {
+      width: 100%;
+      padding-top: 50%;
+    }
+    .products .products-item .products-item-content {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+{% if collections[section.settings.collection].products.size > 0 %}
+  <div class="products">
+    <div class="container">
+      <div class="products-title">{{ collections[section.settings.collection].title }}</div>
+      {% for product in collections[section.settings.collection].products limit: section.settings.limit %}
+        <div class="products-item">
+          <div class="img" style="background-image: url({{ product.featured_image | image_url: width: 1000 }})"></div>
+          <div class="products-item-content">
+            <div class="products-item-title">{{ product.title }}</div>
+            <div class="products-item-price">{{ product.price | money }}</div>
+          </div>
+          <div class="products-item-checkout">
+            {% form 'product', product %}
+              <input type="hidden" name="items[0][id]" value="{{ product.selected_or_first_available_variant.id }}">
+              <input type="hidden" name="items[0][quantity]" value="1">
+              <button class="btn btn-primary"
+               {% comment %} type="submit" {% endcomment %}
+               type="button"
+               >
+               Add to cart
+               </button>
+            {% endform %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Products",
+    "settings": [
+      {
+        "type": "collection",
+        "id": "collection",
+        "label": "Collection"
+      }, {
+        "type": "range",
+        "id": "limit",
+        "label": "Limit",
+        "min": 3,
+        "max": 10,
+        "step": 1,
+        "default": 3
+      }
+    ]
+  }
+{% endschema %}

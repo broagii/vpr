@@ -1,0 +1,177 @@
+{% style %}
+  .footer {
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    font-size: 16px;
+    padding: 50px 0;
+  }
+  .footer .wrapper {
+    padding: 0 50px;
+  }
+  .footer .row {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+  }
+  .footer .col {
+    display: flex;
+    flex-direction: column;
+    min-height: 350px;
+    width: 33.33%;
+  }
+  @media only screen and (max-width: 767px) {
+    .footer .row {
+      flex-direction: column;
+    }
+    .footer .col {
+      width: 100%;
+    }
+  }
+  .footer a {
+    color: {{ section.settings.text_color }};
+  }
+  .footer a:hover {
+    color: {{ settings.primary_color }};
+  }
+  .footer .footer-link-text {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 30px;
+  }
+{% endstyle %}
+
+<footer class="footer">
+  <div class="wrapper">
+    <div class="row">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'footer_link' %}
+            <div class="col">
+              <div class="footer-link-text">{{ block.settings.text }}</div>
+              <a
+                href="{{ block.settings.url }}"
+                {% if block.settings.new_tab %}
+                target="_blank"
+                {% endif %}>
+                {% render 'button'
+                  , url: block.settings.url
+                  , text: 'OK' %}
+              </a>
+            </div>
+          {% when 'footer_information' %}
+            <div class="col">
+              <p>{{ block.settings.phone_number }}</p>
+              <p>{{ block.settings.email }}</p>
+              <p>{{ block.settings.address }}</p>
+            </div>
+          {% when 'footer_menu' %}
+            <div class="col text-center">
+              <ul>
+                {% for link in linklists[block.settings.link_list].links -%}
+                  <li>
+                    <a href="{{ link.url }}">{{ link.title }}</a>
+                  </li>
+                {%- endfor %}
+              </ul>
+            </div>
+        {% endcase %}
+      {% endfor %}
+    </div>
+    <div class="copyright">
+      {{ section.settings.copyright }}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+  {
+    "name": "Footer",
+    "settings": [
+      {
+        "type": "color",
+        "id": "background_color",
+        "label": "Background Color",
+        "default": "#000"
+      }, {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text Color",
+        "default": "#fff"
+      }, {
+        "type": "text",
+        "id": "copyright",
+        "label": "Copyright",
+        "default": "Copyright © 2025 All Rights Reserved"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "footer_link",
+        "name": "Footer Link",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text",
+            "default": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos."
+          }, {
+            "type": "url",
+            "id": "link",
+            "label": "URL"
+          }, {
+            "type": "checkbox",
+            "id": "new_tab",
+            "label": "New Tab",
+            "default": true
+          }
+        ]
+      }, {
+        "type": "footer_menu",
+        "name": "Footer Menu",
+        "settings": [
+          {
+            "type": "link_list",
+            "id": "link_list",
+            "label": "Link List"
+          }
+        ]
+      }, {
+        "type": "footer_information",
+        "name": "Footer Information",
+        "settings": [
+          {
+            "type": "text",
+            "id": "phone_number",
+            "label": "Phone number",
+            "default": "(406) 555-0120"
+          }, {
+            "type": "text",
+            "id": "email",
+            "label": "Email",
+            "default": "info@vpr.com"
+          }, {
+            "type": "text",
+            "id": "address",
+            "label": "Address",
+            "default": "123 Main St, Anytown, USA"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Footer",
+        "blocks": [
+          {
+            "type": "footer_link"
+          }, {
+            "type": "footer_menu"
+          }, {
+            "type": "footer_information"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

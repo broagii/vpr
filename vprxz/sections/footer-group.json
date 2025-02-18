@@ -1,0 +1,45 @@
+{
+  "name": "Footer Group",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "background_color": "#000",
+        "text_color": "#fff",
+        "copyright": "Copyright © 2025 All Rights Reserved"
+      },
+      "blocks": {
+        "footer_link": {
+          "type": "footer_link",
+          "settings": {
+            "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.",
+            "new_tab": true
+          }
+        },
+        "footer_menu": {
+          "type": "footer_menu",
+          "settings": {
+            "link_list": "footer"
+          }
+        },
+        "footer_information": {
+          "type": "footer_information",
+          "settings": {
+            "phone_number": "(406) 555-0120",
+            "email": "info@vpr.com",
+            "address": "123 Main St, Anytown, USA"
+          }
+        }
+      },
+      "block_order": [
+        "footer_link",
+        "footer_menu",
+        "footer_information"
+      ]
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

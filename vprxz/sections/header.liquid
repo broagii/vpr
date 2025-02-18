@@ -1,0 +1,69 @@
+{% style %}
+  .header {
+    position: absolute;
+    z-index: 20;
+    width: 100%;
+  }
+
+  .header .container {
+    padding: 0;
+  }
+
+  .header .container .wrapper {
+    height: {{ section.settings.header_height }}px;
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    position: relative;
+    z-index: 12;
+    display: inline-block;
+    flex-shrink: 0;
+    max-width: 128px;
+    margin-right: 32px;
+  }
+  @media only screen and (max-width: 1179px) {
+    .logo {
+      margin-right: auto;
+    }
+  }
+  .logo img {
+    width: 100%;
+  }
+{% endstyle %}
+
+
+<header class="header">
+  <div class="container">
+    <div class="wrapper">
+      <a href="/" class="logo">
+        {% if settings.logo != blank %}
+          <img src="{{ settings.logo | image_url: width: 75 }}" alt="VPR" />
+        {% else %}
+          <img src="{{ 'logo.png' | asset_url }}" alt="VPR" />
+        {% endif %}
+      </a>
+      {% render 'button', text: 'Login', url: '#' %}
+    </div>
+  </div>
+</header>
+
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "range",
+        "id": "header_height",
+        "label": "Height",
+        "default": 70,
+        "min": 50,
+        "max": 100,
+        "step": 1
+      }
+    ]
+  }
+{% endschema %}

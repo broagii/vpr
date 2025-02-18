@@ -1,0 +1,19 @@
+<div>
+  {{ block.settings.content }}
+</div>
+
+{% schema %}
+{
+  "name": "Starter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "content",
+      "label": "Content",
+      "default": "Just for testing"
+    }
+  ],
+  "target": "section"
+}
+{% endschema %}
+

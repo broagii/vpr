@@ -1,0 +1,109 @@
+{% style %}
+  .blogs {
+    padding: {{ section.settings.padding }}px 0;
+  }
+  .blogs .blog-item {
+    /* border-bottom: 1px solid #e2e2e2; */
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  .blogs .blog-item:last-child {
+    margin-bottom: 0;
+  }
+  .blogs .blog-item .img {
+    border-radius: 16px;
+    height: auto;
+    padding-top: 20%;
+    width: 35%;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+  .blogs .blog-item .blog-item-content {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    width: 75%;
+  }
+  .blogs .blog-item .blog-item-content .blog-item-title {
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .blogs .blog-item .blog-item-content .blog-item-description {
+    color: #8a8a8a;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0;
+    max-width: 100%;
+    width: 700px;
+  }
+  .blogs .blog-item .blog-item-date {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .blogs .blog-item {
+      flex-direction: column;
+    }
+    .blogs .blog-item .img {
+      width: 100%;
+      padding-top: 50%;
+    }
+    .blogs .blog-item .blog-item-content {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+{% if blogs[section.settings.blog].articles.size > 0 %}
+  <div class="blogs">
+    <div class="container">
+      {% for blog in blogs[section.settings.blog].articles limit: section.settings.limit %}
+        <div class="blog-item">
+          <div class="img" style="background-image: url({{ blog.image | image_url: width: 1000 }})"></div>
+          <div class="blog-item-content">
+            <div class="blog-item-title">{{ blog.title }}</div>
+            <div class="blog-item-date">{{ blog.published_at | date: '%B %d, %Y' }}</div>
+            <div class="blog-item-description">{{ blog.excerpt }}</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Blogs",
+    "settings": [
+      {
+        "type": "blog",
+        "id": "blog",
+        "label": "Blog"
+      }, {
+        "type": "range",
+        "id": "limit",
+        "label": "Limit",
+        "min": 3,
+        "max": 10,
+        "step": 1,
+        "default": 3
+      }, {
+        "type": "range",
+        "id": "padding",
+        "label": "Padding",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "default": 20
+      }
+    ]
+  }
+{% endschema %}

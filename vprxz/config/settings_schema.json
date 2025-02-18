@@ -1,0 +1,62 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "VPR",
+    "theme_version": "1.0.0",
+    "theme_author": "broa",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://support.shopify.com/"
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "color",
+        "label": "Primary Color",
+        "default": "#000000",
+        "id": "primary_color"
+      },
+      {
+        "type": "color",
+        "label": "Background Color",
+        "default": "#000000",
+        "id": "background_color"
+      },
+      {
+        "type": "font_picker",
+        "label": "Font",
+        "default": "work_sans_n6",
+        "id": "font_family"
+      },
+      {
+        "type": "range",
+        "label": "Font Size",
+        "id": " font_size",
+        "default": 16,
+        "min": 12,
+        "max": 24,
+        "step": 1
+      },
+      {
+        "type": "color",
+        "label": "Color",
+        "default": "#23262f",
+        "id": "color"
+      },
+      {
+        "type": "range",
+        "label": "Line Height",
+        "id": "line_height",
+        "default": 1.7,
+        "min": 1,
+        "max": 2,
+        "step": 0.1
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      }
+    ]
+  }
+]

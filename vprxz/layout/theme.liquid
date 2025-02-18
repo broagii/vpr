@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ shop.name }}</title>
+    {{ content_for_header }}
+
+    {% style %}:root
+    {
+      --primary-color: {{ settings.primary_color }};
+      --background-color: {{ settings.background_color }};
+      --font-family: {{ settings.font_family.family }};
+      --font-size: {{ settings.font_size }}px;
+      --color: {{ settings.color }};
+      --line-height: {{ settings.line_height }};
+    }
+
+    body {
+      background-color: var(--background-color);
+      color: var(--color);
+      font-family: var(--font-family);
+      font-size: var(--font-size);
+      line-height: var(--line-height);
+      margin: 0;
+    }
+
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: 0;
+    }
+
+    a {
+      color: var(--color);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--primary-color);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .container {
+      margin: 0 auto;
+      max-width: 1280px;
+      padding: 0 20px;
+      width: 100%;
+    }
+
+    @media only screen and (max-width: 1179px) {
+      .container {
+        padding: 0 10px;
+      }
+    }
+
+    .btn {
+      align-items: center;
+      background-color: #fff;
+      border-radius: 30px;
+      color: #000;
+      cursor: pointer;
+      display: inline-flex;
+      font-size: 15px;
+      font-weight: 500;
+      gap: 24px;
+      height: 48px;
+      justify-content: center;
+      padding: 0 20px;
+      transition: all 0.2s;
+      outline: none;
+      border: none;
+    }
+
+    .btn span.icon {
+      background-color: #000;
+      color: #fff;
+      align-items: center;
+      border-radius: 50%;
+      display: flex;
+      font-size: 30px;
+      height: 32px;
+      justify-content: center;
+      width: 32px;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    .btn-primary {
+      background-color: #000;
+      color: #fff;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    {{ settings.font_family | font_face: font_display: 'swap' }}
+  {% endstyle %}
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+
+  {{ 'slick.min.js' | asset_url | script_tag }}
+  {{ 'slick.css' | asset_url | stylesheet_tag }}
+</head>
+
+<body>
+  {% section 'header' %}
+
+  {{ content_for_layout }}
+
+  {% sections 'footer-group' %}
+</body></html>
