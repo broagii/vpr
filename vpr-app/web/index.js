@@ -55,12 +55,7 @@ app.get("/api/products/count", async (_req, res) => {
   res.status(200).send({ count: countData.data.productsCount.count });
 });
 
-app.post("/api/products/export", async (_req, res) => {
-  const client = new shopify.api.clients.Graphql({
-    session: res.locals.shopify.session,
-  });
-
-  const products = await client.request(`
+const queryProducts = `
     query {
       products(first: 10) {
         edges {
@@ -84,7 +79,23 @@ app.post("/api/products/export", async (_req, res) => {
         }
       }
   }
-    `);
+    `;
+
+app.get("/api/products", async (_req, res) => {
+  const client = new shopify.api.clients.Graphql({
+    session: res.locals.shopify.session,
+  });
+
+  const products = await client.request(queryProducts);
+  res.status(200).send(products.data.products.edges);
+});
+
+app.post("/api/products/export", async (_req, res) => {
+  const client = new shopify.api.clients.Graphql({
+    session: res.locals.shopify.session,
+  });
+
+  const products = await client.request(queryProducts);
 
   const json2csv = new Parser({ fields: [
     {
