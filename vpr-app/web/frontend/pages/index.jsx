@@ -5,11 +5,15 @@ import {
   Button,
   LegacyStack,
   DataTable,
+  Text,
+  Box,
 } from "@shopify/polaris";
 import { TitleBar, useAppBridge } from "@shopify/app-bridge-react";
 import { useTranslation, Trans } from "react-i18next";
 import { useQuery } from "react-query";
 import { useState } from "react";
+import { Icon } from "@shopify/polaris";
+import { DeleteMajor } from "@shopify/polaris-icons";
 
 const downloadFile = (file) => {
   const a = document.createElement("a");
@@ -22,7 +26,8 @@ export default function HomePage() {
   const { t } = useTranslation();
   const shopify = useAppBridge();
   const [loading, setLoading] = useState(false);
-  const { data = [] } = useQuery({
+  const [productToDelete, setProductToDelete] = useState(null);
+  const { data = [], refetch: refetchProducts } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
       const response = await fetch("/api/products", { method: "GET" });
@@ -49,6 +54,37 @@ export default function HomePage() {
       });
   };
 
+  const confirmDeleteProduct = () => {
+    if (!productToDelete) return;
+
+    fetch(`/api/products/${productToDelete}`, { method: "DELETE" })
+      .then((res) => res.json())
+      .then((response) => {
+        if (response.success) {
+          shopify.toast.show("Product deleted successfully", {
+            duration: 3000,
+            error: false,
+          });
+          refetchProducts();
+        }
+      })
+      .catch(() => {
+        shopify.toast.show("Product delete failed", {
+          duration: 3000,
+          error: true,
+        });
+      })
+      .finally(() => {
+        setProductToDelete(null);
+        shopify.modal.hide("confirm-modal");
+      });
+  };
+
+  const cancelDeleteProduct = () => {
+    setProductToDelete(null);
+    shopify.modal.hide("confirm-modal");
+  };
+
   return (
     <Page fullWidth>
       <TitleBar title={t("HomePage.title")} />
@@ -65,13 +101,22 @@ export default function HomePage() {
                   "Description",
                   "Created At",
                   "Price",
+                  "#",
                 ]}
                 rows={data.map((product) => [
-                  product.node.id,
+                  product.node.legacyResourceId,
                   product.node.title,
                   product.node.description,
                   product.node.createdAt,
                   product.node.variants.edges[0].node.price,
+                  <Button
+                    plain
+                    onClick={() => {
+                      setProductToDelete(product.node.legacyResourceId);
+                      shopify.modal.show("confirm-modal");
+                    }}
+                    icon={DeleteMajor}
+                  ></Button>,
                 ])}
               />
 
@@ -87,6 +132,17 @@ export default function HomePage() {
           </LegacyCard>
         </Layout.Section>
       </Layout>
+      <ui-modal id="confirm-modal">
+        <div style={{ padding: "20px" }}>
+          <p>Are you sure you want to delete this product?</p>
+        </div>
+        <ui-title-bar title="Title">
+          <button variant="primary" onClick={confirmDeleteProduct}>
+            Delete
+          </button>
+          <button onClick={cancelDeleteProduct}>Cancel</button>
+        </ui-title-bar>
+      </ui-modal>
     </Page>
   );
 }

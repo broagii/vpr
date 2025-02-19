@@ -60,7 +60,7 @@ const queryProducts = `
       products(first: 10) {
         edges {
           node {
-            id
+            legacyResourceId
             title
             handle
             createdAt
@@ -90,6 +90,19 @@ app.get("/api/products", async (_req, res) => {
   res.status(200).send(products.data.products.edges);
 });
 
+app.delete("/api/products/:id", async (req, res) => {
+  try {
+    await shopify.api.rest.Product.delete({
+      session: res.locals.shopify.session,
+      id: req.params.id,
+  });
+
+    res.status(200).send({ success: true });
+  } catch (error) {
+    res.status(500).send({ success: false, error: error.message });
+  }
+});
+
 app.post("/api/products/export", async (_req, res) => {
   const client = new shopify.api.clients.Graphql({
     session: res.locals.shopify.session,
@@ -100,7 +113,7 @@ app.post("/api/products/export", async (_req, res) => {
   const json2csv = new Parser({ fields: [
     {
       label: 'ID',
-      value: 'node.id'
+      value: 'node.legacyResourceId'
     },
     {
       label: 'Title',
@@ -124,6 +137,8 @@ app.post("/api/products/export", async (_req, res) => {
     res.attachment('products.csv');
     return res.send(csv);
 });
+
+
 
 app.use(shopify.cspHeaders());
 app.use(serveStatic(STATIC_PATH, { index: false }));
